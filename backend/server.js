@@ -11,22 +11,30 @@ connectDB();
 
 const app = express();
 
-// 🔹 Middleware
+// 🔴 CORS CONFIG (VERY IMPORTANT)
 app.use(cors({
-  origin: '*', // frontend domain baad me restrict kar sakte ho
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: [
+    'http://localhost:5173',                 // local frontend
+    'https://task-tracker-mern-mu.vercel.app' // deployed frontend (Vercel)
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
 }));
+
+// 🔴 Preflight requests handle karo
+app.options('*', cors());
+
 app.use(express.json());
 
 // 🔹 Routes
 app.use('/api/tasks', taskRoutes);
 
-// 🔹 Health check (Render / deployment ke liye useful)
+// 🔹 Health check
 app.get('/', (req, res) => {
   res.send('Task Tracker Backend is running 🚀');
 });
 
-// 🔹 Port (Render ya local dono ke liye)
+// 🔹 Port
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
