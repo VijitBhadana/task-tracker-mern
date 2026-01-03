@@ -11,17 +11,14 @@ connectDB();
 
 const app = express();
 
-// 🔴 CORS CONFIG (VERY IMPORTANT)
+// ✅ FINAL CORS FIX (ALL ORIGINS ALLOWED)
 app.use(cors({
-  origin: [
-    'http://localhost:5173',                 // local frontend
-    'https://task-tracker-mern-mu.vercel.app' // deployed frontend (Vercel)
-  ],
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
 }));
 
-// 🔴 Preflight requests handle karo
+// ✅ Handle preflight requests
 app.options('*', cors());
 
 app.use(express.json());
